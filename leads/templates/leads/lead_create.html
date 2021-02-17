@@ -1,0 +1,14 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <div>
+        <a href="{% url 'leads:lead-list' %}">Go Back To Leads</a>
+        <br/>
+        <h1>Create a new lead</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type='submit'>Add New Lead</button>
+        </form>
+    </div>
+{% endblock content %}

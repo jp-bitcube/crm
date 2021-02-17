@@ -1,0 +1,9 @@
+{% extends 'index.html' %}
+
+{% block content %}
+  <div>
+    <a href="{% url 'leads:lead-list' %}">Go Back To Leads</a>
+    <br/>
+    {{lead.first_name}}
+  </div>
+{% endblock content %}

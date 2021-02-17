@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+
+{% block content %}
+  <div class="w-100">
+    <div class="d-flex p-2 w-100 justify-content-between">
+      <div class="p-2 w-50">
+        <h3>List of Leads</h3>
+      </div>
+      <div class="d-flex p-2 w-50 justify-content-end">
+        <a href="{% url 'leads:lead-create' %}" class="btn btn-primary">Create Lead<a/>
+      </div>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Actions</th>
+          <th scope="col">First name</th>
+          <th scope="col">Last name</th>
+          <th scope="col">Age</th>
+          <th scope="col">Agent</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for lead in leads %}
+          <tr>
+            <td>
+              <div class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Actions</a>
+                <ul class="dropdown-menu text-center" style="max-width: 80px" role="menu" aria-labelledby="dLabel">            
+                  <li><a href="{% url 'leads:lead-details' lead.pk %}" class="card-link">View</a></li>
+                  <li class="divider"></li>
+                  <li><a href="{% url 'leads:lead-update' lead.pk %}" class="card-link">Update</a></li>
+                  <li class="divider"><a href="{% url 'leads:lead-delete' lead.pk %}" class="card-link">Delete</a>  </li>
+                  <li ></li>
+                </ul>
+              </div>     
+            </td>
+            <td>{{lead.first_name}}</td>
+            <td>{{lead.last_name}}</td>
+            <td>{{lead.age}}</td>
+            <td>{{lead.agent}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock content %}
