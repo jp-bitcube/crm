@@ -1,15 +1,41 @@
 <nav class="navbar" style="background-color: #7C9AB6">
     <a class="navbar-brand" href="#">Leads CRM</a>
     <ul class="nav justify-content-end">
-        <li class="nav-item">
-          <a class="nav-link btn btn-outline-secondary" style="margin-right: 10px" href="#">
-            Sign Up
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link btn btn-outline-primary" href="#">
-            Login
-          </a>
-        </li>
+        {% if not request.user.is_authenticated %}
+          <li class="nav-item">
+            <a href="{% url 'sign_up' %}" class="nav-link btn btn-outline-secondary" style="margin-right: 10px">
+              Sign Up
+            </a>
+          </li>
+        {% else %}
+          {% if request.user.is_organiser  %}
+            <li class="nav-item">
+              <a href="{% url 'agents:agent_list' %}" class="nav-link" style="margin-right: 10px">
+                Agents
+              </a>
+            </li>
+          {% endif %}
+          <li class="nav-item">
+            <a href="{% url 'leads:lead-list' %}" class="nav-link" style="margin-right: 10px">
+              Leads
+            </a>
+          </li>
+        {% endif %}
+        {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <p style="margin-right: 10px; margin-top: 8px">Hello {{ request.user.username }}!</p>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'logout' %}" class="nav-link btn btn-outline-primary">
+              Logout
+            </a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a href="{% url 'login' %}" class="nav-link btn btn-outline-primary">
+              Login
+            </a>
+          </li>
+        {% endif %}
     </ul>
 </nav>

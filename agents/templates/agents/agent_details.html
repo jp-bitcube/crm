@@ -1,0 +1,9 @@
+{% extends 'index.html' %}
+
+{% block content %}
+  <div>
+    <a href="{% url 'agents:agent_list' %}">Go Back To Agents</a>
+    <br/>
+    {{agent.user.username}}
+  </div>
+{% endblock content %}
