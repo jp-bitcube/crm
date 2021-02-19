@@ -147,6 +147,7 @@ LOGIN_URL = '/login'
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
+ALLOWED_HOSTS = ['https://lead-crm.herokuapp.com/']
 
 if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -159,5 +160,3 @@ if not DEBUG:
     SECURE_HTST_INCLUDE_SUBDOMAINS = True
     SECURE_HTST_PRELOAD = True
     X_FRAME_OPTIONS = "DENY"
-
-    ALLOWED_HOSTS = ['https://lead-crm.herokuapp.com/']
