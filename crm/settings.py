@@ -166,3 +166,5 @@ if not DEBUG:
     SECURE_HTST_INCLUDE_SUBDOMAINS = True
     SECURE_HTST_PRELOAD = True
     X_FRAME_OPTIONS = "DENY"
+
+    ALLOWED_HOSTS = ['https://lead-crm.herokuapp.com/']
