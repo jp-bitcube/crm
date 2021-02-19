@@ -12,6 +12,9 @@ class LeadModelForm(forms.ModelForm):
         fields = (
             "first_name",
             "last_name",
+            "email",
+            "phone_number",
+            "description",
             "age",
             "agent"
         )
@@ -38,3 +41,11 @@ class AssignAgentForm(forms.Form):
         agents = Agent.objects.filter(organisation=request.user.userprofile)
         super(AssignAgentForm, self).__init__(*args, **kwargs)
         self.fields["agent"].queryset = agents
+
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Lead
+        fields = (
+            "category",
+        )

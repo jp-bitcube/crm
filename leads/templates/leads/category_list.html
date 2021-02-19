@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <div  class="w-100">
+        <div class="d-flex w-50 justify-content-around">
+            <p>Unassigned</p>
+            <p>Count: {{unassigned_lead_count}}</p>
+        </div>
+        {% for category in categories  %}
+            <div class="d-flex w-50 justify-content-around">
+                <a href="{% url 'leads:category-details' category.pk %}">{{category.name}}</a>
+                <p>Count: TODO</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}

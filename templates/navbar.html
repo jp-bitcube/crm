@@ -15,6 +15,12 @@
               </a>
             </li>
           {% endif %}
+
+          <li class="nav-item">
+            <a href="{% url 'leads:category-list' %}" class="nav-link" style="margin-right: 10px">
+              Categories
+            </a>
+          </li>
           <li class="nav-item">
             <a href="{% url 'leads:lead-list' %}" class="nav-link" style="margin-right: 10px">
               Leads

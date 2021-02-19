@@ -22,6 +22,12 @@ class Lead(models.Model):
     organisation = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     agent = models.ForeignKey(
         'Agent', on_delete=models.SET_NULL, null=True, blank=True)
+    category = models.ForeignKey(
+        'Category', related_name="leads", on_delete=models.SET_NULL, null=True, blank=True)
+    description = models.TextField()
+    date_added = models.DateTimeField(auto_now_add=True)
+    phone_number = models.CharField(max_length=20)
+    email = models.EmailField()
 
 
 class Agent(models.Model):
@@ -30,6 +36,11 @@ class Agent(models.Model):
 
     def __str__(self):
         return self.user.email
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=30)
+    organisation = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
 
 def postUserCreatedSignal(sender, instance, created, **kwargs):

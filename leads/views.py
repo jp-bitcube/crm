@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, reverse
 from django.core.mail import send_mail
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView, FormView
-from .models import Lead, Agent
-from .forms import LeadModelForm, LeadForm, CustomUserCreationForm, AssignAgentForm
+from .models import Lead, Agent, Category
+from .forms import LeadModelForm, LeadForm, CustomUserCreationForm, AssignAgentForm, CategoryForm
 from agents.mixins import OrganiserAndLoginMixin
 
 
@@ -31,10 +31,10 @@ class LeadList(LoginRequiredMixin, ListView):
         user = self.request.user
         if self.request.user.is_organiser:
             queryset = Lead.objects.filter(
-                organisation=user.agent.organisation, agent__isnull=False)
+                organisation=user.userprofile, agent__isnull=False)
         else:
             queryset = Lead.objects.filter(
-                organisation=user.userprofile, agent__isnull=False)
+                organisation=user.agent.organisation, agent__isnull=False)
             queryset = queryset.filter(agent__user=user)
         return queryset
 
@@ -43,7 +43,7 @@ class LeadList(LoginRequiredMixin, ListView):
         context = super(LeadList, self).get_context_data(**kwargs)
         if user.is_organiser:
             queryset = Lead.objects.filter(
-                organisation=user.agent.organisation, agent__isnull=True)
+                organisation=user.userprofile, agent__isnull=True)
             context.update({
                 "unassigned_leads": queryset
             })
@@ -64,10 +64,10 @@ class LeadDetails(LoginRequiredMixin, DetailView):
         user = self.request.user
         if self.request.user.is_organiser:
             queryset = Lead.objects.filter(
-                organisation=user.agent.organisation)
+                organisation=user.userprofile)
         else:
             queryset = Lead.objects.filter(
-                organisation=user.userprofile)
+                organisation=user.agent.organisation)
             queryset = queryset.filter(agent__user=user)
         return queryset
 
@@ -116,12 +116,11 @@ class LeadUpdate(OrganiserAndLoginMixin, UpdateView):
     def get_queryset(self):
         user = self.request.user
         if self.request.user.is_organiser:
-            queryset = Lead.objects.filter(
-                organisation=user.agent.organisation)
-        else:
-            queryset = Lead.objects.filter(
+            queryset = Category.objects.filter(
                 organisation=user.userprofile)
-            queryset = queryset.filter(agent__user=user)
+        else:
+            queryset = Category.objects.filter(
+                organisation=user.agent.organisation)
         return queryset
 
     def get_success_url(self):
@@ -149,12 +148,11 @@ class LeadDelete(OrganiserAndLoginMixin, DeleteView):
     def get_queryset(self):
         user = self.request.user
         if self.request.user.is_organiser:
-            queryset = Lead.objects.filter(
-                organisation=user.agent.organisation)
-        else:
-            queryset = Lead.objects.filter(
+            queryset = Category.objects.filter(
                 organisation=user.userprofile)
-            queryset = queryset.filter(agent__user=user)
+        else:
+            queryset = Category.objects.filter(
+                organisation=user.agent.organisation)
         return queryset
 
     def get_success_url(self):
@@ -187,3 +185,76 @@ class AssignAgent(OrganiserAndLoginMixin, FormView):
         lead.agent = agent
         lead.save()
         return super(AssignAgent, self).form_valid(form)
+
+
+class CategoriesList(LoginRequiredMixin, ListView):
+    template_name = 'leads/category_list.html'
+    context_object_name = 'categories'
+
+    def get_context_data(self, **kwargs):
+        user = self.request.user
+        context = super(CategoriesList, self).get_context_data(**kwargs)
+        if user.is_organiser:
+            queryset = Lead.objects.filter(
+                organisation=user.userprofile)
+        else:
+            queryset = Lead.objects.filter(
+                organisation=user.agent.organisation)
+
+        context.update({
+            "unassigned_lead_count": queryset.filter(category__isnull=True).count()
+        })
+        return context
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_organiser:
+            queryset = Category.objects.filter(
+                organisation=user.userprofile)
+        else:
+            queryset = Category.objects.filter(
+                organisation=user.agent.organisation)
+        return queryset
+
+
+class CategoriesDetails(LoginRequiredMixin, DetailView):
+    template_name = 'leads/category_details.html'
+    context_object_name = 'category'
+
+    def get_context_data(self, **kwargs):
+        user = self.request.user
+        context = super(CategoriesDetails, self).get_context_data(**kwargs)
+        leads = self.get_object().leads.all()
+        context.update({
+            "leads": leads
+        })
+        return context
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_organiser:
+            queryset = Category.objects.filter(
+                organisation=user.userprofile)
+        else:
+            queryset = Category.objects.filter(
+                organisation=user.agent.organisation)
+        return queryset
+
+
+class CategoryLeadUpdate(LoginRequiredMixin, UpdateView):
+    template_name = 'leads/lead_category_details.html'
+    context_object_name = 'category'
+    form_class = CategoryForm
+
+    def get_success_url(self):
+        return reverse("leads:lead-list")
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_organiser:
+            queryset = Category.objects.filter(
+                organisation=user.userprofile)
+        else:
+            queryset = Category.objects.filter(
+                organisation=user.agent.organisation)
+        return queryset
