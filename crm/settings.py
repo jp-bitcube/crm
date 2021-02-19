@@ -127,7 +127,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+ALLOWED_HOSTS = ['lead-crm.herokuapp.com/']
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
@@ -158,6 +158,6 @@ if not DEBUG:
     # SECURE_HTST_INCLUDE_SUBDOMAINS = True
     # SECURE_HTST_PRELOAD = True
     # X_FRAME_OPTIONS = "DENY"
-    ALLOWED_HOSTS = ['https://lead-crm.herokuapp.com/']
+
 
 django_heroku.settings(locals())
