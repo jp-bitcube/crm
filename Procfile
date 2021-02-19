@@ -1,2 +1,1 @@
-worker: python manage.py
-web: python manage.py runserver
+web: gunicorn crm.wsgi:app
