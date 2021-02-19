@@ -10,11 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
-from pathlib import Path
 import django_heroku
+from pathlib import Path
 import environ
-
-django_heroku.settings(locals())
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
@@ -31,7 +29,6 @@ DEBUG = env('DEBUG')
 SECRET_KEY = env('SECRET_KEY')
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -162,3 +159,5 @@ if not DEBUG:
     SECURE_HTST_PRELOAD = True
     X_FRAME_OPTIONS = "DENY"
     ALLOWED_HOSTS = ['https://lead-crm.herokuapp.com/']
+
+django_heroku.settings(locals())
