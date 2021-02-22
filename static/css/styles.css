@@ -1,4 +1,76 @@
 body {
+    position: relative;
     height: 100vh;
     background-color: #F2F4F3;
+}
+
+.helptext {
+    visibility: hidden;
+}
+
+#div_id_new_password1>ul {
+    display: none;
+}
+
+.overflow_hidden {
+    overflow: hidden;
+}
+
+.no_border {
+    border: none;
+}
+
+.success {
+    position: relative;
+    padding-top: 5px;
+    background-color: seagreen;
+    color: seashell;
+    width: 101%;
+    text-align: center;
+    margin: -1px;
+}
+
+.overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+}
+
+.navigation_bar {
+    background-color: #7C9AB6;
+}
+
+.snow {
+    color: snow;
+}
+
+.snow_btn {
+    border-color: snow;
+    color: snow;
+}
+
+.margin_v {
+    margin: 5px 0px;
+}
+
+.margin_right {
+    margin-right: 10px
+}
+
+.margin_top {
+    margin-top: 8px;
+}
+
+.small_link {
+    font-size: 12px;
+}
+
+.no_padding {
+    padding: 0px;
 }

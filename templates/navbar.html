@@ -1,44 +1,44 @@
-<nav class="navbar" style="background-color: #7C9AB6">
-    <a class="navbar-brand" href="#">Leads CRM</a>
+<nav class="navbar navigation_bar">
+    <a class="navbar-brand snow" href="#">Leads CRM</a>
     <ul class="nav justify-content-end">
         {% if not request.user.is_authenticated %}
           <li class="nav-item">
-            <a href="{% url 'sign_up' %}" class="nav-link btn btn-outline-secondary" style="margin-right: 10px">
+            <a href="{% url 'sign_up' %}" class="nav-link btn btn-outline-secondary snow margin_right">
               Sign Up
             </a>
           </li>
         {% else %}
           {% if request.user.is_organiser  %}
             <li class="nav-item">
-              <a href="{% url 'agents:agent_list' %}" class="nav-link" style="margin-right: 10px">
+              <a href="{% url 'agents:agent_list' %}" class="nav-link snow margin_right">
                 Agents
               </a>
             </li>
           {% endif %}
 
           <li class="nav-item">
-            <a href="{% url 'leads:category-list' %}" class="nav-link" style="margin-right: 10px">
+            <a href="{% url 'leads:category-list' %}" class="nav-link snow margin_right">
               Categories
             </a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'leads:lead-list' %}" class="nav-link" style="margin-right: 10px">
+            <a href="{% url 'leads:lead-list' %}" class="nav-link snow margin_right">
               Leads
             </a>
           </li>
         {% endif %}
         {% if request.user.is_authenticated %}
           <li class="nav-item">
-            <p style="margin-right: 10px; margin-top: 8px">Hello {{ request.user.username }}!</p>
+            <p class="margin_right margin_top">Hello {{ request.user.username }}!</p>
           </li>
           <li class="nav-item">
-            <a href="{% url 'logout' %}" class="nav-link btn btn-outline-primary">
+            <a href="{% url 'logout' %}" class="nav-link btn btn-outline-primary snow_btn">
               Logout
             </a>
           </li>
         {% else %}
           <li class="nav-item">
-            <a href="{% url 'login' %}" class="nav-link btn btn-outline-primary">
+            <a href="{% url 'login' %}" class="nav-link btn btn-outline-primary snow_btn">
               Login
             </a>
           </li>
