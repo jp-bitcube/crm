@@ -1,8 +1,55 @@
 {% extends 'index.html' %}
 
 {% block content %}
-    <div  class="w-100">
-        <div class="d-flex w-50 justify-content-around">
+    <div class="d-flex p-2 justify-content-between fixed" style="width: 50vw">
+        <h3 class='p-2 w-50'>Categories</h3>
+        {% if request.user.is_organiser  %}
+            <div class="d-flex p-2 w-50 justify-content-end">
+                <a href="{% url 'leads:category-create' %}" class="btn btn-primary">Create Category<a/>
+            </div>
+        {% endif %}
+    </div>
+    <div  class="card" style="width: 50vw">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    {% if request.user.is_organiser  %}
+                        <th scope="col">Actions</th>
+                    {% endif %}
+                        <th scope="col">Name</th>
+                        <th scope="col">Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in categories  %}
+                    <tr>
+                        {% if request.user.is_organiser  %}
+                            <td>
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Actions</a>
+                                    <ul class="dropdown-menu text-center" style="max-width: 80px" role="menu" aria-labelledby="dLabel"> 
+                                        <li class="divider"></li>
+                                        <li><a href="{% url 'leads:category-update' category.pk %}" class="card-link">Update</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="{% url 'leads:category-delete' category.pk %}" class="card-link">Delete</a></li>
+                                    </ul>
+                                </div>  
+                            </td>
+                        {% endif %}
+                            <td><a href="{% url 'leads:category-details' category.pk %}">{{category.name}}</a></td>
+                            <td><p>Count: TODO</p></td>
+                    </tr>
+                {% endfor %}
+                    <tr>
+                        {% if request.user.is_organiser  %}
+                            <td ></td>
+                        {% endif %}
+                            <td>Unassigned</td>
+                            <td>{{unassigned_lead_count}}</td>
+                    </tr>
+            </tbody>
+        </table>
+        {% comment %} <div class=" d-flex justify-content-around">
             <p>Unassigned</p>
             <p>Count: {{unassigned_lead_count}}</p>
         </div>
@@ -11,6 +58,6 @@
                 <a href="{% url 'leads:category-details' category.pk %}">{{category.name}}</a>
                 <p>Count: TODO</p>
             </div>
-        {% endfor %}
+        {% endfor %} {% endcomment %}
     </div>
 {% endblock content %}

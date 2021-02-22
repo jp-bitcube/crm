@@ -1,0 +1,15 @@
+{% extends 'index.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="card w-50 p-3">
+        <a href="{% url 'leads:category-list' %}" class="align-self-end">Go Back To Categories</a>
+        <h2>Update Category</h2>
+        <div class="card-body">
+            <form method='post' class="d-flex flex-column justify-content-center">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button class='w-100 btn btn-primary' type='submit'>Update Category</button>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

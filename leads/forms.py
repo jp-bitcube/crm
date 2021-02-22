@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UsernameField
-from .models import Lead, Agent
+from .models import Lead, Agent, Category
 
 User = get_user_model()
 
@@ -14,9 +14,9 @@ class LeadModelForm(forms.ModelForm):
             "last_name",
             "email",
             "phone_number",
-            "description",
             "age",
-            "agent"
+            "agent",
+            "description",
         )
 
 
@@ -53,4 +53,12 @@ class CategoryForm(forms.ModelForm):
         model = Lead
         fields = (
             "category",
+        )
+
+
+class CategoryForm2(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = (
+            "name",
         )

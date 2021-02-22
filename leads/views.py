@@ -3,7 +3,7 @@ from django.core.mail import send_mail
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView, FormView
 from .models import Lead, Agent, Category
-from .forms import LeadModelForm, LeadForm, CustomUserCreationForm, AssignAgentForm, CategoryForm
+from .forms import LeadModelForm, LeadForm, CustomUserCreationForm, AssignAgentForm, CategoryForm, CategoryForm2
 from agents.mixins import OrganiserAndLoginMixin
 
 
@@ -17,10 +17,6 @@ class SignUp(CreateView):
 
 class LandingPageView(TemplateView):
     template_name = 'landing_page.html'
-
-
-def landing_page(request):
-    return render(request, 'landing_page.html')
 
 
 class LeadList(LoginRequiredMixin, ListView):
@@ -50,12 +46,6 @@ class LeadList(LoginRequiredMixin, ListView):
         return context
 
 
-def lead_list(request):
-    leads = Lead.objects.all()
-    context = {"leads": leads}
-    return render(request, "leads/lead_list.html", context)
-
-
 class LeadDetails(LoginRequiredMixin, DetailView):
     template_name = 'leads/lead_details.html'
     context_object_name = 'lead'
@@ -70,12 +60,6 @@ class LeadDetails(LoginRequiredMixin, DetailView):
                 organisation=user.agent.organisation)
             queryset = queryset.filter(agent__user=user)
         return queryset
-
-
-def lead_details(request, pk):
-    lead = Lead.objects.get(id=pk)
-    context = {"lead": lead}
-    return render(request, "leads/lead_details.html", context)
 
 
 class LeadCreate(OrganiserAndLoginMixin, CreateView):
@@ -98,71 +82,41 @@ class LeadCreate(OrganiserAndLoginMixin, CreateView):
         return super(LeadCreate, self).form_valid(form)
 
 
-def lead_create(request):
-    form = LeadModelForm()
-    if request.method == 'POST':
-        form = LeadModelForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("/leads")
-    context = {"form": form}
-    return render(request, "leads/lead_create.html", context)
-
-
 class LeadUpdate(OrganiserAndLoginMixin, UpdateView):
     template_name = 'leads/lead_update.html'
     form_class = LeadModelForm
 
     def get_queryset(self):
         user = self.request.user
-        if self.request.user.is_organiser:
-            queryset = Category.objects.filter(
+        if user.is_organiser:
+            queryset = Lead.objects.filter(
                 organisation=user.userprofile)
         else:
-            queryset = Category.objects.filter(
+            queryset = Lead.objects.filter(
                 organisation=user.agent.organisation)
         return queryset
 
     def get_success_url(self):
         return reverse("leads:lead-list")
-
-
-def lead_update(request, pk):
-    lead = Lead.objects.get(id=pk)
-    form = LeadModelForm(instance=lead)
-    if request.method == 'POST':
-        form = LeadModelForm(request.POST, instance=lead)
-        if form.is_valid():
-            form.save()
-            return redirect("/leads")
-    context = {
-        "lead": lead,
-        "form": form
-    }
-    return render(request, "leads/lead_update.html", context)
 
 
 class LeadDelete(OrganiserAndLoginMixin, DeleteView):
     template_name = 'leads/lead_delete.html'
 
-    def get_queryset(self):
+    def form_valid(self, form):
         user = self.request.user
-        if self.request.user.is_organiser:
-            queryset = Category.objects.filter(
-                organisation=user.userprofile)
-        else:
-            queryset = Category.objects.filter(
-                organisation=user.agent.organisation)
-        return queryset
+        lead = Lead.objects.get(id=pk)
+        print(lead)
+        lead.delete()
+        return super(LeadDelete, self).form_valid(form)
 
     def get_success_url(self):
         return reverse("leads:lead-list")
 
-
-def lead_delete(request, pk):
-    lead = Lead.objects.get(id=pk)
-    lead.delete()
-    return redirect("/leads")
+    def get_queryset(self):
+        user = self.request.user
+        # initial queryset of leads for the entire organisation
+        return Lead.objects.filter(organisation=user.userprofile)
 
 
 class AssignAgent(OrganiserAndLoginMixin, FormView):
@@ -217,6 +171,36 @@ class CategoriesList(LoginRequiredMixin, ListView):
         return queryset
 
 
+class CategoriesCreate(OrganiserAndLoginMixin, CreateView):
+    template_name = 'leads/category_create.html'
+    form_class = CategoryForm2
+
+    def get_success_url(self):
+        return reverse("leads:category-list")
+
+    def form_valid(self, form):
+        category = form.save(commit=False)
+        category.organisation = self.request.user.userprofile
+        category.save()
+        return super(CategoriesCreate, self).form_valid(form)
+
+
+class CategoriesUpdate(OrganiserAndLoginMixin, UpdateView):
+    template_name = 'leads/category_update.html'
+    form_class = CategoryForm2
+
+    def get_success_url(self):
+        return reverse("leads:category-list")
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_organiser:
+            queryset = Category.objects.filter(
+                organisation=user.userprofile)
+
+        return queryset
+
+
 class CategoriesDetails(LoginRequiredMixin, DetailView):
     template_name = 'leads/category_details.html'
     context_object_name = 'category'
@@ -247,14 +231,14 @@ class CategoryLeadUpdate(LoginRequiredMixin, UpdateView):
     form_class = CategoryForm
 
     def get_success_url(self):
-        return reverse("leads:lead-list")
+        return reverse("leads:lead-details", kwargs={"pk": self.get_object().id})
 
     def get_queryset(self):
         user = self.request.user
         if user.is_organiser:
-            queryset = Category.objects.filter(
+            queryset = Lead.objects.filter(
                 organisation=user.userprofile)
         else:
-            queryset = Category.objects.filter(
+            queryset = Lead.objects.filter(
                 organisation=user.agent.organisation)
         return queryset

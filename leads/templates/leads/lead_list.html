@@ -1,62 +1,18 @@
 {% extends 'index.html' %}
 
 {% block content %}
-  {% if unassigned_leads.exists %}
-
-    <div class="w-100">
-      <div class="d-flex p-2 w-100 justify-content-between">
-        <div class="p-2 w-50">
-          <h3>List of Unassigned Leads</h3>
-        </div>
-        {% if request.user.is_organiser  %}
-          <div class="d-flex p-2 w-50 justify-content-end">
-            <a href="{% url 'leads:lead-create' %}" class="btn btn-primary">Create Lead<a/>
-          </div>
-        {% endif %}
+  <div class="d-flex p-2 justify-content-between fixed" style="width: 80vw">
+    <h3 class='p-2 w-50'>Leads</h3>
+    {% if request.user.is_organiser  %}
+      <div class="d-flex p-2 w-50 justify-content-end">
+        <a href="{% url 'leads:lead-create' %}" class="btn btn-primary">Create Lead<a/>
       </div>
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">Actions</th>
-            <th scope="col">First name</th>
-            <th scope="col">Last name</th>
-            <th scope="col">Age</th>
-            <th scope="col">Agent</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for lead in unassigned_leads %}
-            <tr>
-              <td>
-                <div class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Actions</a>
-                  <ul class="dropdown-menu text-center" style="max-width: 80px" role="menu" aria-labelledby="dLabel">            
-                    <li><a href="{% url 'leads:lead-details' lead.pk %}" class="card-link">View</a></li>
-                  {% if request.user.is_organiser  %}
-                    <li class="divider"></li>
-                    <li><a href="{% url 'leads:lead-agent' lead.pk %}" class="card-link">Assign</a></li>
-                    <li class="divider"></li>
-                    <li><a href="{% url 'leads:lead-update' lead.pk %}" class="card-link">Update</a></li>
-                    <li class="divider"></li>
-                    <li><a href="{% url 'leads:lead-delete' lead.pk %}" class="card-link">Delete</a></li>
-                  {% endif %}
-                  </ul>
-                </div>     
-              </td>
-              <td>{{lead.first_name}}</td>
-              <td>{{lead.last_name}}</td>
-              <td>{{lead.age}}</td>
-              <td>{{lead.agent}}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  {% endif %}
-  <div style="width: 80vw;">
+    {% endif %}
+  </div>
+  <div class='card' style="width: 80vw;">
     <div class="d-flex p-2 w-100 justify-content-between">
-      <div class="p-2 w-60">
-        <h3>List of Assigned Leads</h3>
+      <div class="p-2 w-100 d-flex justify-content-between">
+        <h3 class='d-flex p-2 w-50'>Assigned</h3>
       </div>
     </div>
     <table class="table table-striped">
@@ -91,8 +47,61 @@
             <td>{{lead.age}}</td>
             <td>{{lead.agent}}</td>
           </tr>
+          {% empty %}
+          <div class='w-100 text-center'>
+            <p>Currently there are no assigned leads available.</p>
+            <p style='margin-top: -15px'>Create a lead or assign a lead from the unassigned table!</p>
+          </div>
         {% endfor %}
       </tbody>
     </table>
   </div>
+  {% if unassigned_leads.exists %}
+    <div class="card margin_top2" style="width: 80vw">
+      <div class="d-flex p-2 w-100 justify-content-between">
+        <div class="p-2 w-50">
+          <h3>Unassigned</h3>
+        </div>
+      </div>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Actions</th>
+            <th scope="col">Name</th>
+            <th scope="col">Age</th>
+            <th scope="col">Email</th>
+            <th scope="col">Description</th>
+            <th scope="col">Agent</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for lead in unassigned_leads %}
+              <tr>
+                <td>
+                  <div class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Actions</a>
+                    <ul class="dropdown-menu text-center" style="max-width: 80px" role="menu" aria-labelledby="dLabel">            
+                      <li><a href="{% url 'leads:lead-details' lead.pk %}" class="card-link">View</a></li>
+                    {% if request.user.is_organiser  %}
+                      <li class="divider"></li>
+                      <li><a href="{% url 'leads:lead-agent' lead.pk %}" class="card-link">Assign</a></li>
+                      <li class="divider"></li>
+                      <li><a href="{% url 'leads:lead-update' lead.pk %}" class="card-link">Update</a></li>
+                      <li class="divider"></li>
+                      <li><a href="{% url 'leads:lead-delete' lead.pk %}" class="card-link">Delete</a></li>
+                    {% endif %}
+                    </ul>
+                  </div>     
+                </td>
+                <td>{{lead.first_name}} {{lead.last_name}}</td>
+                <td>{{lead.age}}</td>
+                <td>{{lead.email}}</td>
+                <td>{{lead.description}}</td>
+                <td>{{lead.agent}}</td>
+              </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endif %}
 {% endblock content %}

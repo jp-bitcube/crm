@@ -20,14 +20,23 @@ body {
     border: none;
 }
 
-.success {
+.success,
+.Warning {
     position: relative;
     padding-top: 5px;
-    background-color: seagreen;
-    color: seashell;
     width: 101%;
     text-align: center;
     margin: -1px;
+}
+
+.success {
+    background-color: seagreen;
+    color: seashell;
+}
+
+.Warning {
+    background-color: sienna;
+    color: seashell;
 }
 
 .overlay {
@@ -73,4 +82,19 @@ body {
 
 .no_padding {
     padding: 0px;
+}
+
+.margin_top2 {
+    margin-top: 50px;
+}
+
+.scrollY {
+    position: relative;
+    overflow-y: auto;
+    height: 85vh;
+}
+
+.fixed {
+    position: sticky;
+    top: 0px;
 }
