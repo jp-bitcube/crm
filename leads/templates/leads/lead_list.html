@@ -15,14 +15,15 @@
         <h3 class='d-flex p-2 w-50'>Assigned</h3>
       </div>
     </div>
-    <table class="table table-striped">
+    <table class="table table-striped w-100">
       <thead>
         <tr>
-          <th scope="col">Actions</th>
-          <th scope="col">First name</th>
-          <th scope="col">Last name</th>
-          <th scope="col">Age</th>
-          <th scope="col">Agent</th>
+            <th scope="col">Actions</th>
+            <th scope="col">Name</th>
+            <th scope="col">Age</th>
+            <th scope="col">Email</th>
+            <th scope="col">Description</th>
+            <th scope="col">Agent</th>
         </tr>
       </thead>
       <tbody>
@@ -42,9 +43,10 @@
                 </ul>
               </div>     
             </td>
-            <td>{{lead.first_name}}</td>
-            <td>{{lead.last_name}}</td>
+            <td>{{lead.first_name}} {{lead.last_name}}</td>
             <td>{{lead.age}}</td>
+            <td>{{lead.email}}</td>
+            <td>{{lead.description}}</td>
             <td>{{lead.agent}}</td>
           </tr>
           {% empty %}
@@ -63,7 +65,7 @@
           <h3>Unassigned</h3>
         </div>
       </div>
-      <table class="table table-striped">
+      <table class="table table-striped w-100">
         <thead>
           <tr>
             <th scope="col">Actions</th>

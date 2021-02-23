@@ -6,6 +6,11 @@ User = get_user_model()
 
 
 class AgentModelForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(AgentModelForm, self).__init__(*args, **kwargs)
+        for fieldname in ['username']:
+            self.fields[fieldname].help_text = None
+
     class Meta:
         model = User
         fields = (

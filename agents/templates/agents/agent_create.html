@@ -1,14 +1,15 @@
 {% extends 'index.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <div>
-        <a href="{% url 'agents:agent_list' %}">Go Back To Agents</a>
-        <br/>
-        <h1>Create a new agent</h1>
-        <form method="post">
-            {% csrf_token %}
-            {{ form|crispy }}
-            <button type='submit'>Add Agent</button>
-        </form>
+    <div class="card w-50 p-3">
+        <a class='align-self-end' href="{% url 'agents:agent_list' %}">Go Back To Agents</a>
+        <h3>Create Agent</h3>
+        <div class="card-body">
+            <form method='post' class="d-flex flex-column justify-content-center">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button class='w-100 btn btn-primary' type='submit'>Add Agent</button>
+            </form>
+        </div>
     </div>
 {% endblock content %}

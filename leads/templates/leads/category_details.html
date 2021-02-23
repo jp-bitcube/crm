@@ -1,10 +1,48 @@
 {% extends 'index.html' %}
 
 {% block content %}
-    <div  class="w-100">
-        <h3>Category: {{category.name}}</h3>
-        {% for lead in leads %}
-            <a href="{% url 'leads:lead-details' lead.pk %}">{{lead.first_name}} {{lead.last_name}}</a>
-        {% endfor %}
+    <div class="d-flex p-2 justify-content-between fixed" style="width: 50vw">
+        <h3 class='p-2 w-50'>Category: {{category.name}}</h3>
+        {% if request.user.is_organiser  %}
+            <div class="d-flex p-2 w-50 justify-content-end">
+                <a href="{% url 'leads:lead-create' %}" class="btn btn-primary">Create Lead<a/>
+            </div>
+        {% endif %}
+    </div>
+    <div  class="card" style="width: 50vw">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    {% if request.user.is_organiser  %}
+                        <th scope="col">Actions</th>
+                    {% endif %}
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for lead in leads  %}
+                    <tr>
+                        {% if request.user.is_organiser  %}
+                            <td>
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Actions</a>
+                                    <ul class="dropdown-menu text-center" style="max-width: 80px" role="menu" aria-labelledby="dLabel"> 
+                                        <li><a href="{% url 'leads:lead-details' lead.pk %}" class="card-link">View</a></li>
+                                        <li class="divider"></li>
+                                        <li class="divider"></li>
+                                        <li><a href="{% url 'leads:lead-update' lead.pk %}" class="card-link">Update</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="{% url 'leads:lead-delete' lead.pk %}" class="card-link">Delete</a></li>
+                                    </ul>
+                                </div>  
+                            </td>
+                        {% endif %}
+                            <td>{{lead.first_name}} {{lead.last_name}}</td>
+                            <td>{{lead.email}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock content %}

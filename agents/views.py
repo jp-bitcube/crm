@@ -55,12 +55,15 @@ class AgentUpdate(OrganiserAndLoginMixin, UpdateView):
     template_name = 'agents/agent_update.html'
     form_class = AgentModelForm
 
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_organiser:
+            queryset = Agent.objects.filter(
+                organisation=user.userprofile)
+        return queryset
+
     def get_success_url(self):
         return reverse("agents:agent_list")
-
-    def get_queryset(self):
-        request_user_organisation = self.request.user.userprofile
-        return Agent.objects.filter(organisation=request_user_organisation)
 
 
 class AgentDelete(OrganiserAndLoginMixin, DeleteView):

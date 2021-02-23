@@ -1,9 +1,28 @@
 {% extends 'index.html' %}
 
 {% block content %}
-  <div>
+  <div class='card p-3' style='width: 30vw'>
     <a href="{% url 'agents:agent_list' %}">Go Back To Agents</a>
-    <br/>
-    {{agent.user.username}}
+    <h3>Agent</h3>
+    <div class='d-flex justify-content-between'>
+      <p><b>User Name:</b> </p> 
+      <p>{{agent.user.username}}</p>
+    </div>
+    <div class='d-flex justify-content-between'>
+      <p><b>First Name:</b></p> 
+      <p>{{agent.user.first_name}}</p>
+    </div>
+    <div class='d-flex justify-content-between'>
+      <p><b>Last Name:</b></p> 
+      <p>{{agent.user.last_name}}</p>
+    </div>
+    <div class='d-flex justify-content-between'>
+      <p><b>Email:</b></p> 
+      <p>{{agent.user.email}}</p>
+    </div>
+    <div class='d-flex justify-content-between'>
+      <p><b>Last Login:</b></p> 
+      <p>{{agent.user.last_login}}</p>
+    </div>
   </div>
 {% endblock content %}

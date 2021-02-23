@@ -29,35 +29,25 @@
                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">Actions</a>
                                     <ul class="dropdown-menu text-center" style="max-width: 80px" role="menu" aria-labelledby="dLabel"> 
                                         <li class="divider"></li>
-                                        <li><a href="{% url 'leads:category-update' category.pk %}" class="card-link">Update</a></li>
+                                        <li><a href="{% url 'leads:category-update' category.category.pk %}" class="card-link">Update</a></li>
                                         <li class="divider"></li>
-                                        <li><a href="{% url 'leads:category-delete' category.pk %}" class="card-link">Delete</a></li>
+                                        <li><a href="{% url 'leads:category-delete' category.category.pk %}" class="card-link">Delete</a></li>
                                     </ul>
                                 </div>  
                             </td>
                         {% endif %}
-                            <td><a href="{% url 'leads:category-details' category.pk %}">{{category.name}}</a></td>
-                            <td><p>Count: TODO</p></td>
+                            <td><a href="{% url 'leads:category-details' category.category.pk %}">{{category.category.name}}</a></td>
+                            <td><p> {{category.category.count}} </p></td>
                     </tr>
                 {% endfor %}
                     <tr>
                         {% if request.user.is_organiser  %}
-                            <td ></td>
+                            <td></td>
                         {% endif %}
                             <td>Unassigned</td>
                             <td>{{unassigned_lead_count}}</td>
                     </tr>
             </tbody>
         </table>
-        {% comment %} <div class=" d-flex justify-content-around">
-            <p>Unassigned</p>
-            <p>Count: {{unassigned_lead_count}}</p>
-        </div>
-        {% for category in categories  %}
-            <div class="d-flex w-50 justify-content-around">
-                <a href="{% url 'leads:category-details' category.pk %}">{{category.name}}</a>
-                <p>Count: TODO</p>
-            </div>
-        {% endfor %} {% endcomment %}
     </div>
 {% endblock content %}

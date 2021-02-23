@@ -1,0 +1,5 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    {% include 'components/pop_up.html' with delete='True' URL='leads:category-list' class='Warning' value='category'%}
+{% endblock content %}

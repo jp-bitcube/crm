@@ -144,6 +144,7 @@ class AssignAgent(OrganiserAndLoginMixin, FormView):
 class CategoriesList(LoginRequiredMixin, ListView):
     template_name = 'leads/category_list.html'
     context_object_name = 'categories'
+    count = 'count'
 
     def get_context_data(self, **kwargs):
         user = self.request.user
@@ -151,14 +152,29 @@ class CategoriesList(LoginRequiredMixin, ListView):
         if user.is_organiser:
             queryset = Lead.objects.filter(
                 organisation=user.userprofile)
+            categories = Category.objects.filter(
+                organisation=user.userprofile)
         else:
             queryset = Lead.objects.filter(
                 organisation=user.agent.organisation)
+            categories = Category.objects.filter(
+                organisation=user.agent.organisation)
 
-        context.update({
-            "unassigned_lead_count": queryset.filter(category__isnull=True).count()
-        })
-        return context
+        cats = []
+        for category in categories:
+            cats.append({
+                "category": {
+                    "pk": category.id,
+                    "name": category.name,
+                    "count": queryset.filter(category_id=category.id).count()
+                }
+            })
+        if len(cats) == len(categories):
+            context.update({
+                "unassigned_lead_count": queryset.filter(category__isnull=True).count(),
+                "categories": cats
+            })
+            return context
 
     def get_queryset(self):
         user = self.request.user
@@ -188,6 +204,28 @@ class CategoriesCreate(OrganiserAndLoginMixin, CreateView):
 class CategoriesUpdate(OrganiserAndLoginMixin, UpdateView):
     template_name = 'leads/category_update.html'
     form_class = CategoryForm2
+
+    def get_success_url(self):
+        return reverse("leads:category-list")
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_organiser:
+            queryset = Category.objects.filter(
+                organisation=user.userprofile)
+
+        return queryset
+
+
+class CategoriesDelete(OrganiserAndLoginMixin, DeleteView):
+    template_name = 'leads/category_delete.html'
+
+    def form_valid(self, form):
+        user = self.request.user
+        category = Category.objects.get(id=pk)
+        print(category)
+        category.delete()
+        return super(CategoriesDelete, self).form_valid(form)
 
     def get_success_url(self):
         return reverse("leads:category-list")
