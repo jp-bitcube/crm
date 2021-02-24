@@ -91,10 +91,28 @@ body {
 .scrollY {
     position: relative;
     overflow-y: auto;
-    height: 85vh;
+    max-height: 85vh;
+    width: 70vw;
 }
 
 .fixed {
     position: sticky;
     top: 0px;
+}
+
+.tableCell {
+    width: 150px;
+    max-height: 30px;
+}
+
+.actionsCell {
+    width: 100px;
+}
+
+.ageCell {
+    width: 50px;
+}
+
+.descriptionCell {
+    width: 200px;
 }
