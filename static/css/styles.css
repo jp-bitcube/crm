@@ -116,3 +116,7 @@ body {
 .descriptionCell {
     width: 200px;
 }
+
+.container-height {
+    height: 80vh;
+}
