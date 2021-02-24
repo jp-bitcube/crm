@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect, reverse
-from django.core.mail import send_mail
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView, FormView
 from .models import Lead, Agent, Category
 from .forms import LeadModelForm, LeadForm, CustomUserCreationForm, AssignAgentForm, CategoryForm, CategoryForm2
 from agents.mixins import OrganiserAndLoginMixin
+from django.contrib.auth.views import PasswordResetView
+from crm.mail import sendEmail
+from crm.email_templates import assignedLead
 
 
 class SignUp(CreateView):
@@ -73,12 +75,11 @@ class LeadCreate(OrganiserAndLoginMixin, CreateView):
         lead = form.save(commit=False)
         lead.organisation = self.request.user.userprofile
         lead.save()
-        send_mail(
-            subject="Lead has been created",
-            message="Go to site to view the lead",
-            from_email="test@test.com",
-            recipient_list=["Test@test2.com"]
-        )
+
+        if lead.agent:
+            sendEmail(lead.agent.user, assignedLead(
+                lead.agent.user), 'Assigned Lead')
+
         return super(LeadCreate, self).form_valid(form)
 
 
@@ -106,7 +107,6 @@ class LeadDelete(OrganiserAndLoginMixin, DeleteView):
     def form_valid(self, form):
         user = self.request.user
         lead = Lead.objects.get(id=pk)
-        print(lead)
         lead.delete()
         return super(LeadDelete, self).form_valid(form)
 
@@ -223,7 +223,6 @@ class CategoriesDelete(OrganiserAndLoginMixin, DeleteView):
     def form_valid(self, form):
         user = self.request.user
         category = Category.objects.get(id=pk)
-        print(category)
         category.delete()
         return super(CategoriesDelete, self).form_valid(form)
 

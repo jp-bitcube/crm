@@ -1,6 +1,7 @@
 import random
+from crm.mail import sendEmail
+from crm.email_templates import welcomePasswordEmail
 from django.shortcuts import redirect, reverse
-from django.core.mail import send_mail
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from leads.models import Agent
 from .forms import AgentModelForm
@@ -24,21 +25,20 @@ class AgentsCreate(OrganiserAndLoginMixin, CreateView):
         return reverse("agents:agent_list")
 
     def form_valid(self, form):
+        password = f"{random.randint(0, 1000000)}"
         user = form.save(commit=False)
         user.is_agent = True
         user.is_organiser = False
-        user.set_password(f"{random.randint(0, 1000000)}")
+        user.set_password(password)
         user.save()
         Agent.objects.create(
             user=user,
             organisation=self.request.user.userprofile
         )
-        send_mail(
-            subject="You are invited to be an agent",
-            message="You were added as an agent on the CRM, Please come login",
-            from_email="jp@bitcube.tech",
-            recipient_list=[user.email]
-        )
+
+        sendEmail(user, welcomePasswordEmail(
+            user, password), 'Welcome to Lead CRM')
+
         return super(AgentsCreate, self).form_valid(form)
 
 

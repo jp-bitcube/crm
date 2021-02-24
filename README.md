@@ -33,3 +33,13 @@ $ pip install virtualenv
 $ source venv/bin/activate
 $ export READ_DOT_ENV_FILE=True
 $ python manage.py runserver
+
+## Set-up Email Sendgrid
+
+`If you are not using a SMPT from Sendgrid locally change the crm/settings.py variable`
+
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+`else when the SMPT is set-up you can leave this as is`
+
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'   
