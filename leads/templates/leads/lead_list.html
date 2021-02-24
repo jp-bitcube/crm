@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="w-100">
-  <div class="d-flex p-2 justify-content-between fixed">
+  <div class="d-flex p-2 justify-content-between margin_top2">
     <h3 class='p-2 w-50'>Leads</h3>
     {% if request.user.is_organiser  %}
     <div class="d-flex p-2 w-50 justify-content-end">
@@ -60,7 +60,7 @@
     </table>
   </div>
   {% if unassigned_leads.exists %}
-  <div class="card margin_top2 scrollY">
+  <div class="card margin_top2">
     <div class="d-flex p-2 w-100 justify-content-between">
       <div class="p-2 w-50">
         <h3>Unassigned</h3>
