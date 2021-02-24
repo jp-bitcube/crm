@@ -1,16 +1,16 @@
 {% extends 'index.html' %}
 
 {% block content %}
-<div>
-  <div class="d-flex p-2 justify-content-between fixed scrollY">
+<div class="w-100 scrollY">
+  <div class="d-flex p-2 justify-content-between fixed">
     <h3 class='p-2 w-50'>Agents</h3>
     {% if request.user.is_organiser  %}
     <div class="d-flex p-2 w-50 justify-content-end">
-      <a href="{% url 'agents:agent_create' %}" class="btn btn-primary">Create Agent<a />
+      <a href="{% url 'agents:agent_create' %}" class="btn btn-primary scale">Create Agent</a>
     </div>
     {% endif %}
   </div>
-  <div class='card scrollY'>
+  <div class='card'>
     <table class="table table-striped">
       <thead>
         <tr>

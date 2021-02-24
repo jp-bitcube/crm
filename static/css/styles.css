@@ -121,7 +121,7 @@ body {
     height: 80vh;
 }
 
-a:hover {
+.scale:hover {
     transform: scale(1.1);
     text-decoration: none;
 }

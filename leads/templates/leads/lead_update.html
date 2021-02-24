@@ -1,23 +1,23 @@
 {% extends 'index.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <div class='w-100 card d-flex flex-column p-2 margin_top2'>
-        <a href="{% url 'leads:lead-list' %}" class='align-self-end p-2'>Go Back To Leads</a>
-        <h3 class='p-2'>Update lead: {{lead.first_name}} {{lead.last_name}}</h3>
-        <form method="post" class='w-100 d-flex justify-content-between'>
-            {% csrf_token %}
-            <div class='group1 w-50 p-3'>
-                {{ form.first_name|as_crispy_field }} 
-                {{ form.last_name|as_crispy_field }} 
-                {{ form.email|as_crispy_field }} 
-                {{ form.phone_number|as_crispy_field }} 
-                {{ form.age|as_crispy_field }} 
-            </div>
-            <div class='group2 w-50 p-3'>
-                {{ form.agent|as_crispy_field }} 
-                {{ form.description|as_crispy_field }} 
-                <button type='submit' class='w-100 btn btn-primary'>Update Lead</button>
-            </div>
-        </form>
-    </div>
+<div class='w-100 card d-flex flex-column p-2 margin_top2'>
+    <a href="{% url 'leads:lead-list' %}" class='align-self-end p-2 scale small_link'>Go Back To Leads</a>
+    <h3 class='p-2'>Update lead: {{lead.first_name}} {{lead.last_name}}</h3>
+    <form method="post" class='w-100 d-flex justify-content-between'>
+        {% csrf_token %}
+        <div class='group1 w-50 p-3'>
+            {{ form.first_name|as_crispy_field }}
+            {{ form.last_name|as_crispy_field }}
+            {{ form.email|as_crispy_field }}
+            {{ form.phone_number|as_crispy_field }}
+            {{ form.age|as_crispy_field }}
+        </div>
+        <div class='group2 w-50 p-3'>
+            {{ form.agent|as_crispy_field }}
+            {{ form.description|as_crispy_field }}
+            <button type='submit' class='w-100 btn btn-primary'>Update Lead</button>
+        </div>
+    </form>
+</div>
 {% endblock content %}
