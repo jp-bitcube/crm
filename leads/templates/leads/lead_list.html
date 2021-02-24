@@ -14,6 +14,12 @@
     <div class="d-flex p-2 w-100 justify-content-between">
       <div class="p-2 w-100 d-flex justify-content-between">
         <h3 class='d-flex p-2 w-50'>Assigned</h3>
+
+        {% if unassigned_leads.exists %}
+        <a href="{% url 'leads:unassigned-leads' %}" class="btn btn-outline-secondary scale" style="height: 40px;">
+          Unassigned leads
+        </a>
+        {% endif %}
       </div>
     </div>
     <table class="table table-striped w-100">
@@ -58,55 +64,37 @@
         {% endfor %}
       </tbody>
     </table>
+    {% if is_paginated %}
+    <ul class="pagination align-self-center">
+      {% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      </li>
+      {% else %}
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1">Previous</a>
+      </li>
+      {% endif %}
+      {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+      <li class="page-item active">
+        <a class="page-link" href="#">{{ i }}<span class="sr-only">(current)</span></a>
+      </li>
+      {% else %}
+      <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+      </li>
+      {% else %}
+      <li class="page-item disabled">
+        <a class="page-link" href="#">Next</a>
+      </li>
+      {% endif %}
+    </ul>
+    {% endif %}
   </div>
-  {% if unassigned_leads.exists %}
-  <div class="card margin_top2">
-    <div class="d-flex p-2 w-100 justify-content-between">
-      <div class="p-2 w-50">
-        <h3>Unassigned</h3>
-      </div>
-    </div>
-    <table class="table table-striped w-100">
-      <thead>
-        <tr>
-          <th class="tableCell actionsCell" scope="col">Actions</th>
-          <th class="tableCell" scope="col">Name</th>
-          <th class="tableCell ageCell" scope="col">Age</th>
-          <th class="tableCell" scope="col">Email</th>
-          <th class="tableCell descriptionCell" scope="col">Description</th>
-          <th class="tableCell" scope="col">Agent</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for lead in unassigned_leads %}
-        <tr>
-          <td class="tableCell actionsCell">
-            <div class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Actions</a>
-              <ul class="dropdown-menu text-center" style="max-width: 80px" role="menu" aria-labelledby="dLabel">
-                <li><a href="{% url 'leads:lead-details' lead.pk %}" class="card-link">View</a></li>
-                {% if request.user.is_organiser  %}
-                <li class="divider"></li>
-                <li><a href="{% url 'leads:lead-agent' lead.pk %}" class="card-link">Assign</a></li>
-                <li class="divider"></li>
-                <li><a href="{% url 'leads:lead-update' lead.pk %}" class="card-link">Update</a></li>
-                <li class="divider"></li>
-                <li><a href="{% url 'leads:lead-delete' lead.pk %}" class="card-link">Delete</a></li>
-                {% endif %}
-              </ul>
-            </div>
-          </td>
-          <td class="tableCell">{{lead.first_name}} {{lead.last_name}}</td>
-          <td class="tableCell ageCell">{{lead.age}}</td>
-          <td class="tableCell">{{lead.email}}</td>
-          <td class="tableCell descriptionCell">{{lead.description}}</td>
-          <td class="tableCell">{{lead.agent}}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-  {% endif %}
-
 </div>
 {% endblock content %}

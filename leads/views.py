@@ -24,6 +24,7 @@ class LandingPageView(TemplateView):
 class LeadList(LoginRequiredMixin, ListView):
     template_name = 'leads/lead_list.html'
     context_object_name = 'leads'
+    paginate_by = 5
 
     def get_queryset(self):
         user = self.request.user
@@ -46,6 +47,19 @@ class LeadList(LoginRequiredMixin, ListView):
                 "unassigned_leads": queryset
             })
         return context
+
+
+class LeadUnassignedList(OrganiserAndLoginMixin, ListView):
+    template_name = 'leads/lead_assigned_list.html'
+    context_object_name = 'unassigned_leads'
+    paginate_by = 5
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_organiser:
+            queryset = Lead.objects.filter(
+                organisation=user.userprofile, agent__isnull=True)
+        return queryset
 
 
 class LeadDetails(LoginRequiredMixin, DetailView):
