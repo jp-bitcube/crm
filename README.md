@@ -1,4 +1,6 @@
 ## Runs on Python 3.8
+## Install Dependencies
+$ pip install -r requirement.txt
 
 ## Set-up .env file in crm folder within the project
 DEBUG=True
@@ -12,12 +14,22 @@ SENDGRID_API_KEY=
 
 generate secret key https://djecrety.ir/
 
+## Set-up DB PostgreSQL
+
+$ createDB leadcrm
+$ python manage.py makemigrations
+$ python manage.py migrate
+
+## Create a Super User Account
+
+$ python manage.py createsuperuser
+
 ## Need to set-up virtualenv
 
-pip install virtualenv
+$ pip install virtualenv
 
 ## To Run the Application:
 
-source venv/bin/activate
-export READ_DOT_ENV_FILE=True
-python manage.py runserver
+$ source venv/bin/activate
+$ export READ_DOT_ENV_FILE=True
+$ python manage.py runserver
