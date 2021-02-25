@@ -2,23 +2,11 @@ from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView, FormView
 from .models import Lead, Agent, Category
-from .forms import LeadModelForm, LeadForm, CustomUserCreationForm, AssignAgentForm, CategoryForm, CategoryForm2
+from .forms import LeadModelForm, LeadForm, AssignAgentForm, CategoryForm, CategoryForm2
 from agents.mixins import OrganiserAndLoginMixin
 from django.contrib.auth.views import PasswordResetView
 from crm.mail import sendEmail
 from crm.email_templates import assignedLead
-
-
-class SignUp(CreateView):
-    template_name = 'registration/sign_up.html'
-    form_class = CustomUserCreationForm
-
-    def get_success_url(self):
-        return reverse("login")
-
-
-class LandingPageView(TemplateView):
-    template_name = 'landing_page.html'
 
 
 class LeadList(LoginRequiredMixin, ListView):
@@ -50,8 +38,8 @@ class LeadList(LoginRequiredMixin, ListView):
 
 
 class LeadUnassignedList(OrganiserAndLoginMixin, ListView):
-    template_name = 'leads/lead_assigned_list.html'
-    context_object_name = 'unassigned_leads'
+    template_name = 'leads/lead_unassigned_list.html'
+    context_object_name = 'leads'
     paginate_by = 5
 
     def get_queryset(self):

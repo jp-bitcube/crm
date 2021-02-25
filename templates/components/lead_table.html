@@ -1,0 +1,59 @@
+{% load django_bootstrap_icons %}
+{% include_bootstrap_icons %}
+<table class="table table-striped align-self-center mh-50 table_width">
+    <thead>
+        <tr>
+            <th class="tableCell actionsCell" scope="col"></th>
+            <th class="tableCell" scope="col">Name</th>
+            <th class="tableCell ageCell" scope="col">Age</th>
+            <th class="tableCell" scope="col">Email</th>
+            <th class="tableCell descriptionCell" scope="col">Description</th>
+            <th class="tableCell" scope="col">Agent</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for lead in leads %}
+        <tr style='max-height: 30px'>
+            <td class="tableCell actionsCell">
+                <!-- TO DO: Move to own dynamic html 
+                            Only show the Binoculars for agent
+                -->
+                {% if request.user.is_organiser  %}
+                <div class="dropdown">
+                    <a class="hint hint--right drop_down_menu scale" data-hint="Menu" data-toggle="dropdown"
+                        data-toggle="dropdown" href="#">{% bs_icon 'three-dots-vertical' %}</a>
+                    <ul class="dropdown-menu text-center" role="menu" aria-labelledby="dLabel">
+                        <div class="d-flex justify-content-between menu">
+                            <a class="snow hint hint--top" data-hint="View"
+                                href="{% url 'leads:lead-details' lead.pk %}"
+                                class="card-link">{% bs_icon 'binoculars-fill' %}</a>
+                            {% if request.user.is_organiser  %}
+                            <a class="snow hint hint--top" data-hint="Update"
+                                href="{% url 'leads:lead-update' lead.pk %}"
+                                class="card-link">{% bs_icon 'pen-fill' %}</a>
+                            <a class="snow hint hint--top" data-hint="Delete"
+                                href="{% url 'leads:lead-delete' lead.pk %}"
+                                class="card-link">{% bs_icon 'trash-fill' %}</a></li>
+                            {% endif %}
+                        </div>
+                    </ul>
+                </div>
+                {% else %}
+                <a class="hint hint--top drop_down_menu scale" data-hint="View"
+                    href="{% url 'leads:lead-details' lead.pk %}" class="card-link">{% bs_icon 'binoculars-fill' %}</a>
+                {% endif %}
+            </td>
+            <td class="tableCell">{{lead.first_name}} {{lead.last_name}}</td>
+            <td class="tableCell ageCell">{{lead.age}}</td>
+            <td class="tableCell">{{lead.email}}</td>
+            <td class="tableCell descriptionCell">{{lead.description}}</td>
+            <td class="tableCell">{{lead.agent}}</td>
+        </tr>
+        {% empty %}
+        <div class='w-100 text-center'>
+            <p>Currently there are no assigned leads available.</p>
+            <p style='margin-top: -15px'>Create a lead or assign a lead from the unassigned table!</p>
+        </div>
+        {% endfor %}
+    </tbody>
+</table>

@@ -1,0 +1,26 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="w-100">
+    <div class="d-flex p-2 justify-content-between">
+        <h3 class='p-2 w-50'>Leads</h3>
+        {% if request.user.is_organiser  %}
+        <div class="d-flex p-2 w-50 justify-content-end">
+            <a href="{% url 'leads:lead-create' %}" class="btn btn-primary scale">Create Lead</a>
+        </div>
+        {% endif %}
+    </div>
+    <div class='card max_height'>
+        <div class="d-flex p-2 w-100 justify-content-between">
+            <div class="p-2 w-100 d-flex justify-content-between">
+                <h3 class='d-flex p-2 w-50'>Unassigned</h3>
+                <a href="{% url 'leads:lead-list' %}" class="btn btn-outline-primary scale" style="height: 40px;">
+                    Assigned leads
+                </a>
+            </div>
+        </div>
+        {% include 'components/lead_table.html'%}
+        {% include 'components/pagination.html'%}
+    </div>
+</div>
+{% endblock %}

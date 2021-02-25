@@ -15,8 +15,8 @@
 
 <body>
   {% include 'navbar.html'%}
-  <div class="container d-flex align-items-center justify-content-center flex-column container-height"
-    style="overflow-y: auto;">
+  <div class="container d-flex flex-column align-items-center container-height"
+    style="margin-top: 50px; overflow-y: auto;">
     {% block content %}
     {% endblock %}
   </div>

@@ -1,9 +1,5 @@
 from django import forms
-from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm, UsernameField
 from .models import Lead, Agent, Category
-
-User = get_user_model()
 
 
 class LeadModelForm(forms.ModelForm):
@@ -24,18 +20,6 @@ class LeadForm(forms.Form):
     first_name = forms.CharField()
     last_name = forms.CharField()
     age = forms.IntegerField(min_value=0)
-
-
-class CustomUserCreationForm(UserCreationForm):
-    def __init__(self, *args, **kwargs):
-        super(CustomUserCreationForm, self).__init__(*args, **kwargs)
-        for fieldname in ['username', 'password1', 'password2']:
-            self.fields[fieldname].help_text = None
-
-    class Meta:
-        model = User
-        fields = ("username", "email")
-        field_classes = {"username": UsernameField}
 
 
 class AssignAgentForm(forms.Form):

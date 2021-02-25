@@ -1,5 +1,4 @@
 from django.urls import path
-
 from leads.views import (
     LeadList, LeadDetails, LeadCreate, LeadUpdate, LeadDelete, LeadUnassignedList,
     AssignAgent, CategoriesList, CategoriesDetails, CategoryLeadUpdate, CategoriesCreate,
