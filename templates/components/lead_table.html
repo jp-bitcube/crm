@@ -33,7 +33,7 @@
         {% empty %}
         <div class='w-100 text-center'>
             <p>Currently there are no assigned leads available.</p>
-            <p style='margin-top: -15px'><a href="{% url 'lead:lead-create' %}">Create a lead</a> or assign a lead from
+            <p style='margin-top: -15px'><a href="{% url 'leads:lead-create' %}">Create a lead</a> or assign a lead from
                 the unassigned table!</p>
         </div>
         {% endfor %}
