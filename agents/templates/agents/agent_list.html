@@ -35,6 +35,16 @@
           <td>{{agent.user.last_login}}</td>
           <td>{{agent.user.email}}</td>
         </tr>
+        {% empty %}
+        <div class='w-100 text-center'>
+          <p>Currently there are no agents available.</p>
+          <p style='margin-top: -15px'>Create a agent to start converting your leads!</p>
+          <p style='margin-top: -15px'>Note:</p>
+          <ul>
+            <li>When creating an agent an email with username, and password will be emailed to your new agent</li>
+            <li>Agents will only be able to follow-up on leads assigned to them</li>
+          </ul>
+        </div>
         {% endfor %}
       </tbody>
     </table>
