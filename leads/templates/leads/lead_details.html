@@ -1,38 +1,56 @@
 {% extends 'index.html' %}
 
 {% block content %}
-<div class='card w-50'>
-  <div class='card-body'>
-    <div class='d-flex justify-content-between p-3'>
-      <div>
-        <a href="{% url 'leads:lead-list' %}" class='scale small_link'>Go To Leads</a>
-        <h3>Lead Details</h3>
+<a href="{% url 'leads:lead-list' %}" class='scale small_link align-self-end p-3'>Go Back To Leads</a>
+<div class="w-100 d-flex">
+  <div class='card w-50'>
+    <div class='card-body'>
+      <div class='d-flex justify-content-between'>
+        <h3 class='w-100 text-center'>Lead Details</h3>
       </div>
-    </div>
-    <div class='d-flex flex-column w-100'>
-      <div class='d-flex'>
-        <div class='group1 w-50 p-3'>
-          <p><b>First Name:</b> {{ lead.first_name }}</p>
-          <p><b>Last Name:</b> {{ lead.last_name }}</p>
-          <p><b>Email:</b> <a href="mailto:{{lead.email}}">{{ lead.email }}</a></p>
-          <p><b>Contact:</b> {{ lead.phone_number }}</p>
-          <p><b>Age:</b> {{lead.age}}</p>
+      <div class='d-flex flex-column w-100'>
+        <div class='d-flex'>
+          <div class='group1 w-50 p-3'>
+            <p><b>First Name:</b> {{ lead.first_name }}</p>
+            <p><b>Last Name:</b> {{ lead.last_name }}</p>
+            <p><b>Email:</b> <a href="mailto:{{lead.email}}">{{ lead.email }}</a></p>
+            <p><b>Contact:</b> {{ lead.phone_number }}</p>
+            <p><b>Age:</b> {{lead.age}}</p>
+          </div>
+          <div class='group2 w-50 p-3'>
+            <p><b>Agent:</b> {{ lead.agent }}</p>
+            <p><b>Category:</b> {{ lead.category }}</p>
+            <a href="{% url 'category:lead-category' lead.pk %}" style='height: 40px'
+              class='btn btn-outline-primary scale2'>Category
+              Selection</a>
+            <a href="{% url 'leads:lead-follow-create' lead.pk %}" style='height: 40px'
+              class="btn btn-outline-secondary scale2">Add Follow Up</a>
+          </div>
         </div>
-        <div class='group2 w-50 p-3'>
-          <p><b>Agent:</b> {{ lead.agent }}</p>
-          <p><b>Category:</b> {{ lead.category }}</p>
-          <a href="{% url 'category:lead-category' lead.pk %}" style='height: 40px'
-            class='btn btn-outline-primary scale2'>Category
-            Selection</a>
-          <a href="{% url 'leads:lead-follow-create' lead.pk %}" style='height: 40px'
-            class="btn btn-outline-secondary scale2">Follow Up</a>
+        <div class="p-8" style="width: 35vw; margin-left: 15px;">
+          <p><b>Description:</b></p>
+          <p>{{ lead.description }}</p>
         </div>
-      </div>
-      <div class="p-8" style="width: 35vw; margin-left: 15px;">
-        <p><b>Description:</b></p>
-        <p>{{ lead.description }}</p>
       </div>
     </div>
   </div>
+  <div class="card w-50">
+    <div class='d-flex justify-content-between p-3'>
+      <div class='text-center w-100'>
+        <h3>Followed Up Notes</h3>
+      </div>
+    </div>
+    <table class="table table-striped align-self-center table_width">
+      {% for followup in lead.followups.all %}
+      <tr>
+        <td scope="col">
+          {% include 'components/table_menu.html' with del='leads:lead-follow-delete' detail='None' update='leads:lead-follow-update' id=followup.pk %}
+        </td>
+        <td scope="col">{{followup.notes}}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
 </div>
+
 {% endblock content %}

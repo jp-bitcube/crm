@@ -6,8 +6,10 @@
         href="#">{% bs_icon 'three-dots-vertical' %}</a>
     <ul class="dropdown-menu text-center" role="menu" aria-labelledby="dLabel">
         <div class="d-flex justify-content-between menu">
+            {% if detail != 'None' %}
             <a class="snow hint hint--top" data-hint="View" href="{% url detail id%}"
                 class="card-link">{% bs_icon 'binoculars-fill' %}</a>
+            {% endif %}
             {% if request.user.is_organiser  %}
             <a class="snow hint hint--top" data-hint="Update" href="{% url update id %}"
                 class="card-link">{% bs_icon 'pen-fill' %}</a>

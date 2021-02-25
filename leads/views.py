@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView, FormView
-from .models import Lead, Agent, Category
+from .models import Lead, Agent, Category, FollowUp
 from .forms import LeadModelForm, LeadForm, AssignAgentForm, FollowUpModelForm
 from agents.mixins import OrganiserAndLoginMixin
 from django.contrib.auth.views import PasswordResetView
@@ -192,8 +192,7 @@ class FollowUpUpdate(LoginRequiredMixin, UpdateView):
 
     def get_queryset(self):
         user = self.request.user
-        # initial queryset of leads for the entire organisation
-        if user.is_organisor:
+        if user.is_organiser:
             queryset = FollowUp.objects.filter(
                 lead__organisation=user.userprofile)
         else:
@@ -201,6 +200,7 @@ class FollowUpUpdate(LoginRequiredMixin, UpdateView):
                 lead__organisation=user.agent.organisation)
             # filter for the agent that is logged in
             queryset = queryset.filter(lead__agent__user=user)
+
         return queryset
 
     def get_success_url(self):
@@ -217,7 +217,7 @@ class FollowUpDelete(OrganiserAndLoginMixin, DeleteView):
     def get_queryset(self):
         user = self.request.user
         # initial queryset of leads for the entire organisation
-        if user.is_organisor:
+        if user.is_organiser:
             queryset = FollowUp.objects.filter(
                 lead__organisation=user.userprofile)
         else:
