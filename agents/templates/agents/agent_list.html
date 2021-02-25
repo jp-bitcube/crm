@@ -38,12 +38,14 @@
         {% empty %}
         <div class='w-100 text-center'>
           <p>Currently there are no agents available.</p>
-          <p style='margin-top: -15px'>Create a agent to start converting your leads!</p>
+          <p style='margin-top: -15px'><a href="{% url 'agents:agent_create' %}">Create a agent</a> to start converting
+            your leads!</p>
           <p style='margin-top: -15px'>Note:</p>
-          <ul>
-            <li>When creating an agent an email with username, and password will be emailed to your new agent</li>
-            <li>Agents will only be able to follow-up on leads assigned to them</li>
-          </ul>
+          <div>
+            <p style='margin-top: -15px'>1) Creating an Agent, the username and temp password will be emailed to the
+              user</p>
+            <p style='margin-top: -15px'>2) Agents will only be able to follow-up on leads assigned to them</p>
+          </div>
         </div>
         {% endfor %}
       </tbody>
