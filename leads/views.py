@@ -70,20 +70,23 @@ class LeadDetails(LoginRequiredMixin, DetailView):
 class LeadCreate(OrganiserAndLoginMixin, CreateView):
     template_name = 'leads/lead_create.html'
     form_class = LeadModelForm
+    loading = False
 
     def get_success_url(self):
         return reverse("leads:lead-list")
 
     def form_valid(self, form):
-        lead = form.save(commit=False)
-        lead.organisation = self.request.user.userprofile
-        lead.save()
+        loading = True
+        if (loading):
+            lead = form.save(commit=False)
+            lead.organisation = self.request.user.userprofile
+            lead.save()
 
-        if lead.agent:
-            sendEmail(lead.agent.user, assignedLead(
-                lead.agent.user), 'Assigned Lead')
+            if lead.agent:
+                sendEmail(lead.agent.user, assignedLead(
+                    lead.agent.user), 'Assigned Lead')
 
-        return super(LeadCreate, self).form_valid(form)
+            return super(LeadCreate, self).form_valid(form)
 
 
 class LeadUpdate(OrganiserAndLoginMixin, UpdateView):

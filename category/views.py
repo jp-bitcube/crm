@@ -131,7 +131,7 @@ class CategoriesDetails(LoginRequiredMixin, DetailView):
 
 
 class CategoryLeadUpdate(LoginRequiredMixin, UpdateView):
-    template_name = 'category/lead_category_details.html'
+    template_name = 'leads/lead_category_details.html'
     context_object_name = 'category'
     form_class = CategoryForm
 

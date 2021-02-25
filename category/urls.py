@@ -15,4 +15,6 @@ urlpatterns = [
          CategoriesDelete.as_view(), name='category-delete'),
     path('details/<int:pk>', CategoriesDetails.as_view(),
          name='category-details'),
+    path('selction/<int:pk>', CategoryLeadUpdate.as_view(),
+         name='lead-category'),
 ]

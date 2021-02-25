@@ -21,6 +21,7 @@ class AgentsList(OrganiserAndLoginMixin, ListView):
 class AgentsCreate(OrganiserAndLoginMixin, CreateView):
     template_name = 'agents/agent_create.html'
     form_class = AgentModelForm
+    is_loading = 'True'
 
     def get_success_url(self):
         return reverse("agents:agent_list")

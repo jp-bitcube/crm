@@ -16,7 +16,10 @@
         <div class='group2 w-50 p-3'>
             {{ form.agent|as_crispy_field }}
             {{ form.description|as_crispy_field }}
-            <button type='submit' class='w-100 btn btn-primary'>Add Lead</button>
+            <button type='submit' id='submit_button' class='w-100 btn btn-primary d-flex justify-content-center'
+                style='height: 40px'>
+                <p id='replace'>Add Lead</p>
+            </button>
         </div>
     </form>
 </div>

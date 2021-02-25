@@ -6,4 +6,13 @@ window.addEventListener('load', function () {
             i.classList.add('form-control')
         });
     }
+
+    $(function () {
+        $('form').on('submit', function (e) {
+            if ($('#replace') && $('#submit_button')) {
+                $('#replace').remove();
+                $('#submit_button').append('<div class="loader"></div>')
+            }
+        });
+    })
 });
