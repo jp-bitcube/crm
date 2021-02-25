@@ -142,6 +142,16 @@ body {
     height: 90vh;
 }
 
+.scale2 {
+    margin: 5px;
+}
+
+.scale2:hover {
+    transform: scale(1.1);
+    text-decoration: none;
+    margin: 5px;
+}
+
 .scale:hover {
     transform: scale(1.2);
     text-decoration: none;

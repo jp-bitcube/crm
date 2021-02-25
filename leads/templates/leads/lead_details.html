@@ -8,8 +8,6 @@
         <a href="{% url 'leads:lead-list' %}" class='scale small_link'>Go To Leads</a>
         <h3>Lead Details</h3>
       </div>
-      <a href="{% url 'category:lead-category' lead.pk %}" class='w-50 btn btn-primary h-50 scale'>Category
-        Selection</a>
     </div>
     <div class='d-flex flex-column w-100'>
       <div class='d-flex'>
@@ -23,6 +21,11 @@
         <div class='group2 w-50 p-3'>
           <p><b>Agent:</b> {{ lead.agent }}</p>
           <p><b>Category:</b> {{ lead.category }}</p>
+          <a href="{% url 'category:lead-category' lead.pk %}" style='height: 40px'
+            class='btn btn-outline-primary scale2'>Category
+            Selection</a>
+          <a href="{% url 'leads:lead-follow-create' lead.pk %}" style='height: 40px'
+            class="btn btn-outline-secondary scale2">Follow Up</a>
         </div>
       </div>
       <div class="p-8" style="width: 35vw; margin-left: 15px;">

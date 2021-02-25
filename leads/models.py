@@ -38,6 +38,16 @@ class Agent(models.Model):
         return self.user.email
 
 
+class FollowUp(models.Model):
+    lead = models.ForeignKey(
+        Lead, related_name="followups", on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now_add=True)
+    notes = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.lead.first_name} {self.lead.last_name}"
+
+
 class Category(models.Model):
     name = models.CharField(max_length=30)
     organisation = models.ForeignKey(UserProfile, on_delete=models.CASCADE)

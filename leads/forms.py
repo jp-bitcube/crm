@@ -1,5 +1,5 @@
 from django import forms
-from .models import Lead, Agent
+from .models import Lead, Agent, FollowUp
 
 
 class LeadModelForm(forms.ModelForm):
@@ -30,3 +30,11 @@ class AssignAgentForm(forms.Form):
         agents = Agent.objects.filter(organisation=request.user.userprofile)
         super(AssignAgentForm, self).__init__(*args, **kwargs)
         self.fields["agent"].queryset = agents
+
+
+class FollowUpModelForm(forms.ModelForm):
+    class Meta:
+        model = FollowUp
+        fields = (
+            'notes',
+        )
