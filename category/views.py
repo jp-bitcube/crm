@@ -11,10 +11,24 @@ class CategoriesList(LoginRequiredMixin, ListView):
     template_name = 'category/category_list.html'
     context_object_name = 'categories'
     count = 'count'
+    paginate_by = 4
 
     def get_context_data(self, **kwargs):
         user = self.request.user
         context = super(CategoriesList, self).get_context_data(**kwargs)
+        if user.is_organiser:
+            queryset = Lead.objects.filter(
+                organisation=user.userprofile)
+        else:
+            queryset = Lead.objects.filter(
+                organisation=user.agent.organisation)
+        context.update({
+            "unassigned_lead_count": queryset.filter(category__isnull=True).count(),
+        })
+        return context
+
+    def get_queryset(self):
+        user = self.request.user
         if user.is_organiser:
             queryset = Lead.objects.filter(
                 organisation=user.userprofile)
@@ -25,7 +39,6 @@ class CategoriesList(LoginRequiredMixin, ListView):
                 organisation=user.agent.organisation)
             categories = Category.objects.filter(
                 organisation=user.agent.organisation)
-
         cats = []
         for category in categories:
             cats.append({
@@ -36,20 +49,8 @@ class CategoriesList(LoginRequiredMixin, ListView):
                 }
             })
         if len(cats) == len(categories):
-            context.update({
-                "unassigned_lead_count": queryset.filter(category__isnull=True).count(),
-                "categories": cats
-            })
-            return context
+            queryset = cats
 
-    def get_queryset(self):
-        user = self.request.user
-        if user.is_organiser:
-            queryset = Category.objects.filter(
-                organisation=user.userprofile)
-        else:
-            queryset = Category.objects.filter(
-                organisation=user.agent.organisation)
         return queryset
 
 
@@ -107,6 +108,7 @@ class CategoriesDelete(OrganiserAndLoginMixin, DeleteView):
 class CategoriesDetails(LoginRequiredMixin, DetailView):
     template_name = 'category/category_details.html'
     context_object_name = 'category'
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         user = self.request.user

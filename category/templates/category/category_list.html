@@ -9,43 +9,21 @@
     </div>
     {% endif %}
 </div>
-<div class="card" style="width: 50vw">
-    <table class="table table-striped">
+<div class="card max_height" style="width: 50vw">
+    <div class="d-flex p-2 justify-content-between">
+        <h3 class='p-2 w-50'>Active</h3>
+    </div>
+    <table class="table align-self-center table-striped table_width" style="margin-left: 15px;">
         <thead>
             <tr>
                 {% if request.user.is_organiser  %}
-                <th scope="col">Actions</th>
+                <th scope="col"></th>
                 {% endif %}
                 <th scope="col">Name</th>
                 <th scope="col">Count</th>
             </tr>
         </thead>
         <tbody>
-            {% for category in categories  %}
-            <tr>
-                {% if request.user.is_organiser  %}
-                <td>
-                    <div class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Actions</a>
-                        <ul class="dropdown-menu text-center" style="max-width: 80px" role="menu"
-                            aria-labelledby="dLabel">
-                            <li class="divider"></li>
-                            <li><a href="{% url 'category:category-update' category.category.pk %}"
-                                    class="card-link">Update</a></li>
-                            <li class="divider"></li>
-                            <li><a href="{% url 'category:category-delete' category.category.pk %}"
-                                    class="card-link">Delete</a></li>
-                        </ul>
-                    </div>
-                </td>
-                {% endif %}
-                <td><a href="{% url 'category:category-details' category.category.pk %}">{{category.category.name}}</a>
-                </td>
-                <td>
-                    <p> {{category.category.count}} </p>
-                </td>
-            </tr>
-            {% endfor %}
             <tr>
                 {% if request.user.is_organiser  %}
                 <td></td>
@@ -53,7 +31,21 @@
                 <td>Unassigned</td>
                 <td>{{unassigned_lead_count}}</td>
             </tr>
+            {% for category in categories  %}
+            <tr>
+                {% if request.user.is_organiser  %}
+                <td>
+                    {% include 'components/table_menu.html' with del='category:category-delete' detail='category:category-details' update='category:category-update' id=category.category.pk %}
+                </td>
+                {% endif %}
+                <td>{{category.category.name}}</td>
+                <td>
+                    <p> {{category.category.count}} </p>
+                </td>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
+    {% include 'components/pagination.html'%}
 </div>
 {% endblock content %}

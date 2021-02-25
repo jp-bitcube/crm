@@ -15,8 +15,6 @@
         {% for lead in leads %}
         <tr style='max-height: 30px'>
             <td class="tableCell actionsCell">
-                <!-- TO DO: Move to own dynamic html 
-                -->
                 {% if request.user.is_organiser  %}
                 {% include 'components/table_menu.html' with del='leads:lead-delete' detail='leads:lead-details' update='leads:lead-update' id=lead.pk %}
                 {% else %}
