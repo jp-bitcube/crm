@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
 
     'leads',
-    'agents'
+    'agents',
+    'category'
 ]
 
 MIDDLEWARE = [

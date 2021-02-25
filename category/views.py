@@ -8,7 +8,7 @@ from leads.models import Lead, Category
 
 
 class CategoriesList(LoginRequiredMixin, ListView):
-    template_name = 'leads/category_list.html'
+    template_name = 'category/category_list.html'
     context_object_name = 'categories'
     count = 'count'
 
@@ -54,7 +54,7 @@ class CategoriesList(LoginRequiredMixin, ListView):
 
 
 class CategoriesCreate(OrganiserAndLoginMixin, CreateView):
-    template_name = 'leads/category_create.html'
+    template_name = 'category/category_create.html'
     form_class = CategoryForm2
 
     def get_success_url(self):
@@ -68,7 +68,7 @@ class CategoriesCreate(OrganiserAndLoginMixin, CreateView):
 
 
 class CategoriesUpdate(OrganiserAndLoginMixin, UpdateView):
-    template_name = 'leads/category_update.html'
+    template_name = 'category/category_update.html'
     form_class = CategoryForm2
 
     def get_success_url(self):
@@ -84,7 +84,7 @@ class CategoriesUpdate(OrganiserAndLoginMixin, UpdateView):
 
 
 class CategoriesDelete(OrganiserAndLoginMixin, DeleteView):
-    template_name = 'leads/category_delete.html'
+    template_name = 'category/category_delete.html'
 
     def form_valid(self, form):
         user = self.request.user
@@ -105,7 +105,7 @@ class CategoriesDelete(OrganiserAndLoginMixin, DeleteView):
 
 
 class CategoriesDetails(LoginRequiredMixin, DetailView):
-    template_name = 'leads/category_details.html'
+    template_name = 'category/category_details.html'
     context_object_name = 'category'
 
     def get_context_data(self, **kwargs):
@@ -129,7 +129,7 @@ class CategoriesDetails(LoginRequiredMixin, DetailView):
 
 
 class CategoryLeadUpdate(LoginRequiredMixin, UpdateView):
-    template_name = 'leads/lead_category_details.html'
+    template_name = 'category/lead_category_details.html'
     context_object_name = 'category'
     form_class = CategoryForm
 
