@@ -1,0 +1,19 @@
+{% load django_bootstrap_icons %}
+{% include_bootstrap_icons %}
+
+<div class="dropdown">
+    <a class="hint hint--right drop_down_menu scale" data-hint="Menu" data-toggle="dropdown" data-toggle="dropdown"
+        href="#">{% bs_icon 'three-dots-vertical' %}</a>
+    <ul class="dropdown-menu text-center" role="menu" aria-labelledby="dLabel">
+        <div class="d-flex justify-content-between menu">
+            <a class="snow hint hint--top" data-hint="View" href="{% url detail id%}"
+                class="card-link">{% bs_icon 'binoculars-fill' %}</a>
+            {% if request.user.is_organiser  %}
+            <a class="snow hint hint--top" data-hint="Update" href="{% url update id %}"
+                class="card-link">{% bs_icon 'pen-fill' %}</a>
+            <a class="snow hint hint--top" data-hint="Delete" href="{% url del id %}"
+                class="card-link">{% bs_icon 'trash-fill' %}</a></li>
+            {% endif %}
+        </div>
+    </ul>
+</div>

@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 
 {% block content %}
-<div class="w-100 scrollY">
+<div class="w-100">
   <div class="d-flex p-2 justify-content-between fixed">
     <h3 class='p-2 w-50'>Agents</h3>
     {% if request.user.is_organiser  %}
@@ -10,29 +10,26 @@
     </div>
     {% endif %}
   </div>
-  <div class='card'>
-    <table class="table table-striped">
+  <div class='card max_height relative'>
+    <div class="d-flex p-2 w-100 justify-content-between">
+      <div class="p-2 w-100 d-flex justify-content-between">
+        <h3 class='d-flex p-2 w-50'>Active Agents</h3>
+      </div>
+    </div>
+    <table class="table table-striped align-self-center mh-50 table_width">
       <thead>
         <tr>
-          <th scope="col">Actions</th>
-          <th scope="col">Username</th>
-          <th scope="col">Last Login</th>
-          <th scope="col">Email</th>
+          <th class="actionsCell" scope="col"></th>
+          <th class="descriptionCell" scope="col">Username</th>
+          <th class="descriptionCell" scope="col">Last Login</th>
+          <th class="descriptionCell" scope="col">Email</th>
         </tr>
       </thead>
       <tbody>
         {% for agent in agents %}
         <tr>
           <td>
-            <div class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Actions</a>
-              <ul class="dropdown-menu text-center" style="max-width: 80px" role="menu" aria-labelledby="dLabel">
-                <li><a href="{% url 'agents:agent_details' agent.pk %}" class="card-link">View</a></li>
-                <li class="divider"></li>
-                <li><a href="{% url 'agents:agent_update' agent.pk %}" class="card-link">Update</a></li>
-                <li class="divider"><a href="{% url 'agents:agent_delete' agent.pk %}" class="card-link">Delete</a></li>
-              </ul>
-            </div>
+            {% include 'components/table_menu.html' with del='agents:agent_delete' detail='agents:agent_details' update='agents:agent_update' id=agent.pk %}
           </td>
           <td>{{agent.user.username}}</td>
           <td>{{agent.user.last_login}}</td>
@@ -41,6 +38,7 @@
         {% endfor %}
       </tbody>
     </table>
+    {% include 'components/pagination.html'%}
   </div>
 </div>
 {% endblock content %}

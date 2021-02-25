@@ -5,7 +5,7 @@
     <h3 class='p-2 w-50'>Categories</h3>
     {% if request.user.is_organiser  %}
     <div class="d-flex p-2 w-50 justify-content-end">
-        <a href="{% url 'leads:category-create' %}" class="btn btn-primary scale">Create Category<a />
+        <a href="{% url 'category:category-create' %}" class="btn btn-primary scale">Create Category<a />
     </div>
     {% endif %}
 </div>
@@ -30,16 +30,16 @@
                         <ul class="dropdown-menu text-center" style="max-width: 80px" role="menu"
                             aria-labelledby="dLabel">
                             <li class="divider"></li>
-                            <li><a href="{% url 'leads:category-update' category.category.pk %}"
+                            <li><a href="{% url 'category:category-update' category.category.pk %}"
                                     class="card-link">Update</a></li>
                             <li class="divider"></li>
-                            <li><a href="{% url 'leads:category-delete' category.category.pk %}"
+                            <li><a href="{% url 'category:category-delete' category.category.pk %}"
                                     class="card-link">Delete</a></li>
                         </ul>
                     </div>
                 </td>
                 {% endif %}
-                <td><a href="{% url 'leads:category-details' category.category.pk %}">{{category.category.name}}</a>
+                <td><a href="{% url 'category:category-details' category.category.pk %}">{{category.category.name}}</a>
                 </td>
                 <td>
                     <p> {{category.category.count}} </p>

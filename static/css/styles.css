@@ -60,16 +60,24 @@ body {
     background-color: rgba(0, 0, 0, 0.8);
 }
 
-.snow {
+.snow,
+.snow2 {
     color: snow;
 }
 
 .snow:hover {
     transform: scale(1.2);
+    text-decoration: none;
+    color: snow;
+}
+
+.snow2:hover {
+    transform: scale(1.1);
     color: snow;
 }
 
 .snow_btn {
+    margin-left: 10px;
     border-color: snow;
     color: snow;
 }
@@ -83,7 +91,7 @@ body {
 }
 
 .margin_top {
-    margin-top: 8px;
+    margin-top: 15px;
 }
 
 .small_link {
@@ -111,20 +119,23 @@ body {
 }
 
 .tableCell {
-    width: 150px;
-    max-height: 30px;
+    min-width: 150px;
+    max-width: 150px;
 }
 
 .actionsCell {
-    width: 30px;
+    min-width: 30px;
+    max-width: 30px;
 }
 
 .ageCell {
-    width: 50px;
+    min-width: 50px;
+    max-width: 50px;
 }
 
 .descriptionCell {
-    width: 200px;
+    min-width: 220px;
+    max-width: 220px;
 }
 
 .container-height {
@@ -154,12 +165,31 @@ body {
 }
 
 .max_height {
-    min-height: 486px;
-    height: 486px;
-    max-height: 486px;
+    min-height: 540px;
+    max-height: 540px;
 }
 
+.relative {
+    position: relative;
+}
 
+.absolute {
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+}
+
+.clipped {
+    min-width: 220px;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 
 

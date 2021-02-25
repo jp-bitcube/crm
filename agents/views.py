@@ -11,6 +11,7 @@ from .mixins import OrganiserAndLoginMixin
 class AgentsList(OrganiserAndLoginMixin, ListView):
     template_name = 'agents/agent_list.html'
     context_object_name = 'agents'
+    paginate_by = 5
 
     def get_queryset(self):
         request_user_organisation = self.request.user.userprofile

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Lead, Agent, Category
+from .models import Lead, Agent
 
 
 class LeadModelForm(forms.ModelForm):
@@ -30,19 +30,3 @@ class AssignAgentForm(forms.Form):
         agents = Agent.objects.filter(organisation=request.user.userprofile)
         super(AssignAgentForm, self).__init__(*args, **kwargs)
         self.fields["agent"].queryset = agents
-
-
-class CategoryForm(forms.ModelForm):
-    class Meta:
-        model = Lead
-        fields = (
-            "category",
-        )
-
-
-class CategoryForm2(forms.ModelForm):
-    class Meta:
-        model = Category
-        fields = (
-            "name",
-        )

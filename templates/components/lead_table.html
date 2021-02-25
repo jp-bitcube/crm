@@ -16,28 +16,9 @@
         <tr style='max-height: 30px'>
             <td class="tableCell actionsCell">
                 <!-- TO DO: Move to own dynamic html 
-                            Only show the Binoculars for agent
                 -->
                 {% if request.user.is_organiser  %}
-                <div class="dropdown">
-                    <a class="hint hint--right drop_down_menu scale" data-hint="Menu" data-toggle="dropdown"
-                        data-toggle="dropdown" href="#">{% bs_icon 'three-dots-vertical' %}</a>
-                    <ul class="dropdown-menu text-center" role="menu" aria-labelledby="dLabel">
-                        <div class="d-flex justify-content-between menu">
-                            <a class="snow hint hint--top" data-hint="View"
-                                href="{% url 'leads:lead-details' lead.pk %}"
-                                class="card-link">{% bs_icon 'binoculars-fill' %}</a>
-                            {% if request.user.is_organiser  %}
-                            <a class="snow hint hint--top" data-hint="Update"
-                                href="{% url 'leads:lead-update' lead.pk %}"
-                                class="card-link">{% bs_icon 'pen-fill' %}</a>
-                            <a class="snow hint hint--top" data-hint="Delete"
-                                href="{% url 'leads:lead-delete' lead.pk %}"
-                                class="card-link">{% bs_icon 'trash-fill' %}</a></li>
-                            {% endif %}
-                        </div>
-                    </ul>
-                </div>
+                {% include 'components/table_menu.html' with del='leads:lead-delete' detail='leads:lead-details' update='leads:lead-update' id=lead.pk %}
                 {% else %}
                 <a class="hint hint--top drop_down_menu scale" data-hint="View"
                     href="{% url 'leads:lead-details' lead.pk %}" class="card-link">{% bs_icon 'binoculars-fill' %}</a>
@@ -46,7 +27,9 @@
             <td class="tableCell">{{lead.first_name}} {{lead.last_name}}</td>
             <td class="tableCell ageCell">{{lead.age}}</td>
             <td class="tableCell">{{lead.email}}</td>
-            <td class="tableCell descriptionCell">{{lead.description}}</td>
+            <td class="tableCell descriptionCell">
+                <div class="clipped">{{lead.description}}</div>
+            </td>
             <td class="tableCell">{{lead.agent}}</td>
         </tr>
         {% empty %}

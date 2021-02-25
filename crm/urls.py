@@ -14,6 +14,7 @@ urlpatterns = [
     path('', LandingPageView.as_view(), name='landing_page'),
     path('leads/', include('leads.urls', namespace="leads")),
     path('agents/', include('agents.urls', namespace="agents")),
+    path('category/', include('category.urls', namespace="category")),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('signup/', SignUp.as_view(), name='sign_up'),

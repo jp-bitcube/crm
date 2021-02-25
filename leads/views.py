@@ -2,11 +2,12 @@ from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView, FormView
 from .models import Lead, Agent, Category
-from .forms import LeadModelForm, LeadForm, AssignAgentForm, CategoryForm, CategoryForm2
+from .forms import LeadModelForm, LeadForm, AssignAgentForm
 from agents.mixins import OrganiserAndLoginMixin
 from django.contrib.auth.views import PasswordResetView
 from crm.mail import sendEmail
 from crm.email_templates import assignedLead
+from category.forms import CategoryForm
 
 
 class LeadList(LoginRequiredMixin, ListView):
@@ -142,129 +143,6 @@ class AssignAgent(OrganiserAndLoginMixin, FormView):
         lead.save()
         return super(AssignAgent, self).form_valid(form)
 
-
-class CategoriesList(LoginRequiredMixin, ListView):
-    template_name = 'leads/category_list.html'
-    context_object_name = 'categories'
-    count = 'count'
-
-    def get_context_data(self, **kwargs):
-        user = self.request.user
-        context = super(CategoriesList, self).get_context_data(**kwargs)
-        if user.is_organiser:
-            queryset = Lead.objects.filter(
-                organisation=user.userprofile)
-            categories = Category.objects.filter(
-                organisation=user.userprofile)
-        else:
-            queryset = Lead.objects.filter(
-                organisation=user.agent.organisation)
-            categories = Category.objects.filter(
-                organisation=user.agent.organisation)
-
-        cats = []
-        for category in categories:
-            cats.append({
-                "category": {
-                    "pk": category.id,
-                    "name": category.name,
-                    "count": queryset.filter(category_id=category.id).count()
-                }
-            })
-        if len(cats) == len(categories):
-            context.update({
-                "unassigned_lead_count": queryset.filter(category__isnull=True).count(),
-                "categories": cats
-            })
-            return context
-
-    def get_queryset(self):
-        user = self.request.user
-        if user.is_organiser:
-            queryset = Category.objects.filter(
-                organisation=user.userprofile)
-        else:
-            queryset = Category.objects.filter(
-                organisation=user.agent.organisation)
-        return queryset
-
-
-class CategoriesCreate(OrganiserAndLoginMixin, CreateView):
-    template_name = 'leads/category_create.html'
-    form_class = CategoryForm2
-
-    def get_success_url(self):
-        return reverse("leads:category-list")
-
-    def form_valid(self, form):
-        category = form.save(commit=False)
-        category.organisation = self.request.user.userprofile
-        category.save()
-        return super(CategoriesCreate, self).form_valid(form)
-
-
-class CategoriesUpdate(OrganiserAndLoginMixin, UpdateView):
-    template_name = 'leads/category_update.html'
-    form_class = CategoryForm2
-
-    def get_success_url(self):
-        return reverse("leads:category-list")
-
-    def get_queryset(self):
-        user = self.request.user
-        if user.is_organiser:
-            queryset = Category.objects.filter(
-                organisation=user.userprofile)
-
-        return queryset
-
-
-class CategoriesDelete(OrganiserAndLoginMixin, DeleteView):
-    template_name = 'leads/category_delete.html'
-
-    def form_valid(self, form):
-        user = self.request.user
-        category = Category.objects.get(id=pk)
-        category.delete()
-        return super(CategoriesDelete, self).form_valid(form)
-
-    def get_success_url(self):
-        return reverse("leads:category-list")
-
-    def get_queryset(self):
-        user = self.request.user
-        if user.is_organiser:
-            queryset = Category.objects.filter(
-                organisation=user.userprofile)
-
-        return queryset
-
-
-class CategoriesDetails(LoginRequiredMixin, DetailView):
-    template_name = 'leads/category_details.html'
-    context_object_name = 'category'
-
-    def get_context_data(self, **kwargs):
-        user = self.request.user
-        context = super(CategoriesDetails, self).get_context_data(**kwargs)
-        leads = self.get_object().leads.all()
-        context.update({
-            "leads": leads
-        })
-        return context
-
-    def get_queryset(self):
-        user = self.request.user
-        if user.is_organiser:
-            queryset = Category.objects.filter(
-                organisation=user.userprofile)
-        else:
-            queryset = Category.objects.filter(
-                organisation=user.agent.organisation)
-        return queryset
-
-
-class CategoryLeadUpdate(LoginRequiredMixin, UpdateView):
     template_name = 'leads/lead_category_details.html'
     context_object_name = 'category'
     form_class = CategoryForm
